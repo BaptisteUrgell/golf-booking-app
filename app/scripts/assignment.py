@@ -3,8 +3,9 @@ import datetime as dt
 import time
 from datetime import datetime, timedelta
 from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
@@ -43,7 +44,10 @@ async def make_book(email, password, golf, date, time_start, time_perfect, time_
     #Driver pour système d'exploitation à changer dans le fichier config.py
     #Pour Linux 'geckodriver-v0.30.0-linux64/geckodriver'
     #Pour Windows 'geckodriver-v0.30.0-win64/geckodriver.exe'
-    driver = Firefox(executable_path=DRIVER)
+    firefox_options = Options()
+    if not DRY:
+        firefox_options.add_argument("--headless")
+    driver = Firefox(service=FirefoxService(DRIVER), options=firefox_options)
 
     #Url du site
     driver.get("https://www.chronogolf.fr/")
@@ -146,6 +150,9 @@ async def make_book(email, password, golf, date, time_start, time_perfect, time_
         path = f"/html/body/div[2]/div[2]/div/div/div/div/div/div/div[1]/editable-booking-rounds/div/div/div/div[{i+2}]/div/div/div/div/div/input[1]"
         WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH,path))).click()
         send_keys_delay(WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH,path))), list_players[i])
+        time.sleep(5)
+        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH,path))).click()
+
         # WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH,path))).send_keys(Keys.RETURN)
         #Appuie sur le nom du premier golfeur de la liste
         path = f"/html/body/div[2]/div[2]/div/div/div/div/div/div/div[1]/editable-booking-rounds/div/div/div/div[{i+2}]/div/div/div/div/div/ul/li/div[3]/a"
