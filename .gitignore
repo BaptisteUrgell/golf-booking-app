@@ -1,1 +1,5 @@
-__pycache__/config.cpython-38.pyc
+# ignore all __pycache__
+__pycache__
+# ignore all logs
+*.log
+.DS_Store

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+
+  <title>Réservation Golf</title>
+
+  <!-- <script src="{{ url_for('static', path='index.js') }}"></script> -->
+
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='/favicon.png') }}">
+
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <link href="{{ url_for('static', path='/output.css') }}" rel="stylesheet">
+
+</head>
+<body class="bg-neutral-100">
+
+  {% if user_message is not none %}
+    {% if alert %}  
+      <div class="bg-green-100 rounded-lg py-5 px-6 mb-3 text-base text-green-700 inline-flex items-center w-full" role="alert">
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check-circle" class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="currentColor" d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
+        </svg>
+        {{user_message}}
+      </div>
+    {% else %}
+      <div class="bg-red-100 rounded-lg py-5 px-6 mb-3 text-base text-red-700 inline-flex items-center w-full" role="alert">
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times-circle" class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path>
+        </svg>
+        {{user_message}}
+      </div>
+    {% endif %}
+  {% endif %}
+  
+  <!-- <div class="w-full flex flex-row-reverse">
+    <form id="shutdown" method="post" action="/shutdown" class="">
+      <input type="submit" value="Fermer l'application" class="bg-red-700 inline-block px-6 py-2 border-2 border-white text-white font-medium text-xs leading-tight uppercase rounded hover:bg-red-900 focus:outline-none focus:ring-0 transition duration-150 ease-in-out ">
+    </form>
+  </div> -->
+
+
+  <div class="w-full mt-10">
+    <h1 class="font-sans text-center text-7xl text-emerald-900">Réserve ton parcours avant tout le monde !</h1>
+  </div>
+
+
+  <div class="flex w-full content-center justify-center mt-10">
+    <img src="{{ url_for('static', path='/parcours.jpg') }}" alt="Parcours de golf" class="w-4/6 shadow-lg object-cover rounded-xl">
+  </div>
+
+
+  <div class="w-full mt-10 bg-emerald-900 py-10">
+      <h1 class="text-white text-center text-4xl mb-6">Réserver un parcours</h1>
+
+      <form id="booking" method="post" action="/book" class="w-full bg-transparent rounded-lg text-white">
+        <div class="w-full flex content-center justify-center space-x-4">
+
+          <div class="w-1/4">
+
+            <!--Email-->
+            <div class="mb-6">
+              <label for="email" class="block mb-2 text-sm font-medium text-white">Adresse email</label>
+              <input
+                    type="text"
+                    class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+                    placeholder="Email de connexion"
+                    id="email" name="email" required
+              />
+            </div>
+
+            <!--Password-->
+            <div class="mb-6">
+              <label for="password" class="block mb-2 text-sm font-medium text-white">Mot de passe</label>
+              <input
+              type="text"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              placeholder="Mot de passe"
+              id="password" name="password" required
+              />
+            </div>
+
+            <!--Golf-->
+            <div class="mb-6">
+              <label for="golf" class="block mb-2 text-sm font-medium text-white">Parcours</label>
+              <input
+              type="text"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              placeholder="Nom du parcours"
+              id="golf" name="golf" required
+              />
+            </div>
+
+            <!--Players-->
+            <!-- <div class="mb-6">
+              <label for="nb_players" class="block mb-2 text-sm font-medium text-white">Choix du nombre de participant</label>
+              <input
+              type="number"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              placeholder="Nom du parcours"
+              id="nb_players" name="nb_players" min="1" max="4" step="1" value="1"
+              onchange="display_players()"
+              />
+            </div> -->
+
+            <!--Player_2-->
+            <div class="mb-6">
+              <label for="player_2" class="block mb-2 text-sm font-medium text-white">Joueur n°2</label>
+              <input
+              type="text"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              placeholder="Nom du joueur"
+              name="player_2" id="player_2"
+              />
+            </div>
+
+            <!--Player_3-->
+            <div class="mb-6">
+              <label for="player_3" class="block mb-2 text-sm font-medium text-white">Joueur n°3</label>
+              <input
+              type="text"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              placeholder="Nom du joueur"
+              name="player_3" id="player_3"
+              />
+            </div>
+
+          </div>
+
+          <div class="w-1/4">
+
+            <!--Date-->
+            <div class="mb-6">
+              <label for="date" class="block mb-2 text-sm font-medium text-white">Date du départ</label>
+              <input
+              type="date"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              id="date" name="date" required
+              />
+            </div>
+
+            
+            <!--Time start-->
+            <div class="mb-6">
+              <label for="time_start" class="block mb-2 text-sm font-medium text-white">Heure de départ minimale</label>
+              <input
+              type="time"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              id="time_start" name="time_start" 
+              />
+            </div>
+
+            
+            <!--Ideal Time-->
+            <div class="mb-6">
+              <label for="time" class="block mb-2 text-sm font-medium text-white">Heure de départ idéale</label>
+              <input
+              type="time"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              id="time" name="time" 
+              />
+            </div>
+
+
+            <!--Ideal Time-->
+            <div class="mb-6">
+              <label for="time_end" class="block mb-2 text-sm font-medium text-white">Heure de départ maximale</label>
+              <input
+              type="time"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              id="time_end" name="time_end" 
+              />
+            </div>
+
+            <!--Player_4-->
+            <div class="mb-6">
+              <label for="player_4" class="block mb-2 text-sm font-medium text-white">Joueur n°4</label>
+              <input
+              type="text"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-white bg-emerald-800 bg-clip-padding border border-solid border-gray-100 rounded transition ease-in-out m-0 focus:text-white focus:bg-emerald-700 focus:border-white focus:outline-none"
+              placeholder="Nom du joueur"
+              name="player_4" id="player_4"
+              />
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="flex w-full content-center justify-center">
+          <input id="submit" type="submit" value="Réserver" class="w-2/5 inline-block px-6 py-2 border-2 border-white text-white font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out ">
+        </div>
+
+      </form>
+    </div>
+
+  <footer class="bg-gray-200 text-center lg:text-left">
+    <div class="text-gray-700 text-center p-4">
+      © 2022 Copyright:
+      <a class="text-gray-800" href="https://github.com/BaptisteUrgell">Baptiste URGELL</a>
+    </div>
+  </footer>
+
+</body>
+</html>
