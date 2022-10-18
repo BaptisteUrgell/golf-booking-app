@@ -16,8 +16,8 @@
 from typing import Dict
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from core.config import get_api_settings
-from routes.scheduler import SchedulerRouter
+from .core.config import get_api_settings
+from .routes.scheduler import SchedulerRouter
 
 settings = get_api_settings()
 TITLE = settings.title
@@ -34,7 +34,7 @@ app = FastAPI(
     docs_url = URL_SWAGGER
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/app/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(SchedulerRouter)
 
 @app.get('/')
