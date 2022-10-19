@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 
-from core.config import get_api_settings
+from app.core.config import get_api_settings
 
 
 settings = get_api_settings()
