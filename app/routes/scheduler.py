@@ -4,8 +4,8 @@ from fastapi import Form, Request, BackgroundTasks
 from fastapi.routing import APIRouter
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
-from app.core.config import get_api_settings
-from app.scripts.assignment import schedule_books
+from core.config import get_api_settings
+from scripts.assignment import schedule_books
 
 settings = get_api_settings()
 BOOK_DIR = settings.booking_dir
