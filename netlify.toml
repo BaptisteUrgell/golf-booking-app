@@ -2,7 +2,7 @@
     environment = { PYTHON_VERSION = "3.8" }
 
 [build]
-    command = "uvicorn app.main:app --host=0.0.0.0 --port=${PORT:-5000}"
+    command = "uvicorn app.main:app --host=0.0.0.0 --port=${PORT:-5000} &"
 
 [[redirects]]
     from = "/*"
