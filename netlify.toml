@@ -3,7 +3,7 @@
 
 [build]
     command = "uvicorn main:app --host=0.0.0.0 --port=${PORT:-5000}"
-    base = "/app/"
+    base = "./app/"
 
 [[redirects]]
     from = "/*"
