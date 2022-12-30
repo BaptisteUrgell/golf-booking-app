@@ -3,3 +3,5 @@ __pycache__
 # ignore all logs
 *.log
 .DS_Store
+launch.json
+*.db

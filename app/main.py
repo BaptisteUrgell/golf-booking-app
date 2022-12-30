@@ -14,10 +14,22 @@
                                                                                                                                                        
 
 from typing import Dict
-from fastapi import FastAPI
+
+from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.requests import Request
+
+from fastapi_jwt_auth import AuthJWT
+
 from .core.config import get_api_settings
-from .routes.scheduler import SchedulerRouter
+from .routes.receptionist import Receptionist
+from .routes.credit import Credit
+from .routes.login import OAuth2
+
+
+
 
 settings = get_api_settings()
 TITLE = settings.title
@@ -25,7 +37,9 @@ CONTACTS = settings.contacts
 URL_DOC = settings.redoc_url
 URL_SWAGGER = settings.docs_url
 STATICS_DIR = settings.static_dir
+TEMPLATES_DIR = settings.templates_dir
 
+templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 app = FastAPI(
     title = TITLE,
@@ -35,9 +49,23 @@ app = FastAPI(
 )
 
 app.mount("/app/static", StaticFiles(directory="app/static"), name="static")
-app.include_router(SchedulerRouter)
 
-@app.get('/')
+app.include_router(OAuth2)
+app.include_router(Receptionist)
+app.include_router(Credit)
+
+
+@app.get('/', response_class=HTMLResponse)
+async def check_connexion(request: Request, Authorize: AuthJWT = Depends()):
+    try:
+        Authorize.jwt_required()
+        return templates.TemplateResponse("index.html", context={'request': request})
+    except Exception as e:
+        return templates.TemplateResponse("login.html", context={'request': request})
+    
+
+
+@app.get('/info')
 async def about() -> Dict[str, str]:
     """Give information about the API.
 

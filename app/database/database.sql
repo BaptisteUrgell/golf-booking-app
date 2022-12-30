@@ -1,0 +1,33 @@
+DROP TABLE IF EXISTS Book;
+DROP TABLE IF EXISTS Account;
+
+CREATE TABLE  Account
+(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    email VARCHAR(100) NOT NULL,
+    hashed_password VARCHAR(255) NOT NULL,
+    `disabled` BOOLEAN NOT NULL DEFAULT False,
+    credit INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE Book
+(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id INT,
+    email VARCHAR(100) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    golf VARCHAR(100) NOT NULL,
+    `date` DATE NOT NULL,
+    start_time TIME NOT NULL,
+    ideal_time TIME NOT NULL,
+    end_time TIME NOT NULL, 
+    player2 VARCHAR(100),
+    player3 VARCHAR(100),
+    player4 VARCHAR(100),
+    executed BOOLEAN NOT NULL DEFAULT False,
+    `disabled` BOOLEAN NOT NULL DEFAULT False,
+    FOREIGN KEY(user_id) REFERENCES Account(id)
+);
+

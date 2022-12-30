@@ -27,8 +27,8 @@ class APISettings(BaseSettings):
     dry = True
     booking_dir = os.path.join(ROOT_DIR, 'bookings')
     templates_dir = os.path.join(ROOT_DIR, 'templates')
-    python_env = os.path.join(ROOT_DIR, 'python-3.8.10-embed-amd64')
     static_dir = os.path.relpath(os.path.join(ROOT_DIR, 'static'), ROOT_DIR)
+    database = os.path.join(ROOT_DIR, 'database', 'golf-booking-app.db')
 
     ########################     Other params     ########################
 
