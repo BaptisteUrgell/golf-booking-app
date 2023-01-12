@@ -18,21 +18,21 @@ from passlib.hash import bcrypt
 
 settings = get_api_settings()
 TEMPLATES_DIR = settings.templates_dir
+AUTHJWT_SECRET_KEY = settings.authjwt_secret_key
+AUTHJWT_ALGORITHM = settings.authjwt_algorithm
 
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 # to get a string like this run:
 # openssl rand -hex 32
-# SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-# ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_MINUTES = 120
 
 OAuth2 = APIRouter()
 
 class Settings(BaseModel):
-    authjwt_secret_key: str = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-    authjwt_algorithm: str = 'HS256'
+    authjwt_secret_key: str = AUTHJWT_SECRET_KEY
+    authjwt_algorithm: str = AUTHJWT_ALGORITHM
     # Configure application to store and get JWT from cookies
     authjwt_token_location: set = {"cookies"}
     # Only allow JWT cookies to be sent over https

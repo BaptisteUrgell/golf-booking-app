@@ -2,10 +2,13 @@ from functools import lru_cache
 from typing import List
 import os
 
+from cryptography.fernet import Fernet
 from pydantic import BaseSettings
 
-class APISettings(BaseSettings):
+from app.core.security import Security
 
+class APISettings(BaseSettings):
+    
     ########################     Global information    ########################
     
     title: str = "golf-booking-api"
@@ -19,6 +22,13 @@ class APISettings(BaseSettings):
     ########################     Routes    ########################
 
     api_scheduler_route: str = "/api/scheduler"
+
+    ########################     Security    ########################
+    security = Security()
+    fernet = security.fernet
+    authjwt_secret_key: str = security.authjwt_secret_key
+    authjwt_algorithm: str = security.authjwt_algorithm
+    chronogolf_password: str = security.chronogolf_password
         
     ########################     path, driver, ...     ########################
     
@@ -28,7 +38,11 @@ class APISettings(BaseSettings):
     booking_dir = os.path.join(ROOT_DIR, 'bookings')
     templates_dir = os.path.join(ROOT_DIR, 'templates')
     static_dir = os.path.relpath(os.path.join(ROOT_DIR, 'static'), ROOT_DIR)
+
+    ########################     Database     ########################
+
     database = os.path.join(ROOT_DIR, 'database', 'golf-booking-app.db')
+    database_shema = os.path.join(ROOT_DIR, 'database', 'database.db')
 
     ########################     Other params     ########################
 

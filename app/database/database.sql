@@ -17,7 +17,7 @@ CREATE TABLE Book
     `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id INT,
     email VARCHAR(100) NOT NULL,
-    `password` VARCHAR(255) NOT NULL,
+    `password` BLOB NOT NULL,
     golf VARCHAR(100) NOT NULL,
     `date` DATE NOT NULL,
     start_time TIME NOT NULL,

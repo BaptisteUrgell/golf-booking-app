@@ -6,8 +6,10 @@ from app.classes.sqlite import SQLite
 from app.classes.user import User
 from app.classes.book import Book
 
-SECRET_KEY = "cc98d69054398b4603389da534578af501f2b6c2b8e121e2cc3c09f86f68297c"
-ALGORITHM = "HS256"
+from app.core.config import get_api_settings
+settings = get_api_settings()
+
+FERNET = settings.fernet
 
 class AccountExist(Exception):
     pass
@@ -51,11 +53,9 @@ async def create_account(email: str, password: str) -> bool:
 
 async def get_books(id: int):
     list_books = []
-    print(id)
     async with SQLite() as cursor:
         await cursor.execute(f"SELECT id, user_id, email, password, golf, date, start_time, ideal_time, end_time, player2, player3, player4 FROM Book WHERE user_id='{id}' AND executed=False AND disabled=False")
         list_books_bd = await cursor.fetchall()
-        print(list_books_bd)
     for book in list_books_bd:
         list_books.append(Book(
             id         = book[0],
@@ -89,7 +89,7 @@ async def insert_book(book: Book):
             f"INSERT INTO Book(user_id, email, password, golf, date, start_time, ideal_time, end_time, player2, player3, player4) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (book.user_id,
             book.email, 
-            book.password, 
+            FERNET.encrypt(bytes(book.password, encoding='utf-8')),
             book.golf, 
             book.date.strftime("%Y-%m-%d"), 
             book.start_time.strftime("%H:%M:%S"),

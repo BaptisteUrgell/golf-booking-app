@@ -4,12 +4,12 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 
-SCRIPT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
-sys.path.append(SCRIPT_DIR)
-# from core.config import get_api_settings
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 
-# settings = get_api_settings()
-# DRIVER = settings.driver
+from app.core.config import get_api_settings
+
+settings = get_api_settings()
+DRIVER = settings.driver
 
 EMAIL_ACCOUNT = "baptiste.u@gmail.com"
 
@@ -17,7 +17,7 @@ PASSWORD_ACCOUNT = "mQg85WwjVuWmW9y!"
 
 EMAIL = "cabotja@wanadoo.fr"
 
-PASSWORD = "3Uslychien4"
+PASSWORD = settings.chronogolf_password
 
 GOLF = "UGOLF Toulouse La Ramée"
 
@@ -36,7 +36,6 @@ def test_page():
     # firefox_options.add_argument("--headless")
     driver = webdriver.Firefox(service=FirefoxService("app/booking-routine/geckodriver-v0.32.0-macos/geckodriver"), options=firefox_options)
 
-    # driver.get("https://golf-booking-app.herokuapp.com/")
     driver.get("http://127.0.0.1:8000/")
 
     driver.find_element(By.XPATH, '//*[@id="email"]').send_keys(EMAIL_ACCOUNT)

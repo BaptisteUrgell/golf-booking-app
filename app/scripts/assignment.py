@@ -12,7 +12,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from app.core.config import get_api_settings
 
-
 settings = get_api_settings()
 DRY = settings.dry
 DRIVER = settings.driver
@@ -27,18 +26,21 @@ def send_keys_delay(controller,keys):
 def compare_starts(best_start: WebElement, start_container: WebElement, time_start: dt.time, time_end: dt.time, time_perfect: dt.time, nb_players: int):
     time_str = str(start_container.find_element(By.XPATH, "div[1]").get_attribute("textContent")).replace(" ","").replace("\n","")
     start_horaire = datetime.strptime(time_str, "%H:%M")
-    time_str = str(best_start.find_element(By.XPATH, "div[1]").get_attribute("textContent")).replace(" ","").replace("\n","")
-    best_start_horaire = datetime.strptime(time_str, "%H:%M")
-    
-    if start_horaire.time() >= time_start:
-        if start_horaire.time() <= time_end:
+    test = None 
+    if (start_horaire.time() >= time_start) and (start_horaire.time() <= time_end):
+        test = start_container.get_attribute("class")
+        if start_container.get_attribute("class") == 'teesheet-teetime ':
             if len(start_container.find_elements(By.XPATH, "div[2]/teesheet-slots/div/div")) >= 2 * nb_players:
+                if best_start is None:
+                    return start_container
+                time_str = str(best_start.find_element(By.XPATH, "div[1]").get_attribute("textContent")).replace(" ","").replace("\n","")
+                best_start_horaire = datetime.strptime(time_str, "%H:%M")
+            
                 best_time_delta = abs(datetime.combine(datetime.min.date(), best_start_horaire.time()) - datetime.combine(datetime.min.date(), time_perfect))
                 time_delta = abs(datetime.combine(datetime.min.date(), start_horaire.time()) - datetime.combine(datetime.min.date(), time_perfect))
                 if time_delta < best_time_delta:
                     best_start = start_container
     return best_start
-
 
 async def make_book(email, password, golf, date, time_start, time_perfect, time_end, nb_players, list_players):
     #Driver pour système d'exploitation à changer dans le fichier config.py
@@ -48,6 +50,7 @@ async def make_book(email, password, golf, date, time_start, time_perfect, time_
     if not DRY:
         firefox_options.add_argument("--headless")
     driver = Firefox(service=FirefoxService(DRIVER), options=firefox_options)
+
 
     #Url du site
     driver.get("https://www.chronogolf.fr/")
@@ -123,7 +126,7 @@ async def make_book(email, password, golf, date, time_start, time_perfect, time_
     #je récupère de nouveau ma liste et je compare le dernier élément des deux listes, je réitère tant que les deux dernier éléments ne sont pas égaux
     starts_containers: list[WebElement] = driver.find_elements(By.XPATH, path)
     old_starts_containers = [starts_containers[0]]
-    best_start = starts_containers[0]
+    best_start = None
         
     while not starts_containers[-1] == old_starts_containers[-1]:
         j = len(old_starts_containers)
@@ -172,6 +175,7 @@ async def make_book(email, password, golf, date, time_start, time_perfect, time_
 async def schedule_books(email, password, golf, date, time_start, time, time_end, player_2, player_3, player_4):
     date = datetime.combine(date, dt.time(8))
     waiting_time = date - timedelta(days=9) - datetime.now()
+
     if not DRY:
         await asyncio.sleep(waiting_time.total_seconds())
     list_players = [player for player in [player_2, player_3, player_4] if not player is None]

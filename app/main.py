@@ -11,14 +11,13 @@
 #                                                                                                                                                           #
 #############################################################################################################################################################
                                                                                                                                                        
-                                                                                                                                                       
 
-from typing import Dict
+import os
 
 from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
 from fastapi.requests import Request
 
 from fastapi_jwt_auth import AuthJWT
@@ -27,8 +26,7 @@ from .core.config import get_api_settings
 from .routes.receptionist import Receptionist
 from .routes.credit import Credit
 from .routes.login import OAuth2
-
-
+from .classes.sqlite import SQLite
 
 
 settings = get_api_settings()
@@ -38,8 +36,18 @@ URL_DOC = settings.redoc_url
 URL_SWAGGER = settings.docs_url
 STATICS_DIR = settings.static_dir
 TEMPLATES_DIR = settings.templates_dir
+DATABASE = settings.database
+DATABASE_SHEMA = settings.database_shema
 
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
+
+
+def init_db():
+    if not os.path.exists(DATABASE):
+        print("not ok")
+        with SQLite(DATABASE) as db:
+            with open(DATABASE_SHEMA, mode='r') as f:
+                db.executescript(f.read())
 
 app = FastAPI(
     title = TITLE,
@@ -66,11 +74,11 @@ async def check_connexion(request: Request, Authorize: AuthJWT = Depends()):
 
 
 @app.get('/info')
-async def about() -> Dict[str, str]:
+async def about() -> dict[str, str]:
     """Give information about the API.
 
     Returns:
-        Dict[str, str]: With shape :
+        dict[str, str]: With shape :
     `
     {"app_title": <TITLE>, "app_contacts": <CONTACTS>, "api_url_doc": <URL_DOC>, "api_url_swagger": <URL_SWAGGER>}
     `

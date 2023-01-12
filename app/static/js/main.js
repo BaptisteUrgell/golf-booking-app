@@ -158,9 +158,10 @@ function getBooks(thisTable) {
       console.log(data);
       data.forEach(element => {
         let newRow = tBody.insertRow(-1);
-        newRow.classList.add("border-b", "border-gray-100", "bg-emerald-700", "dark:bg-gray-800", "dark:border-gray-700");
+        newRow.classList.add("border-b", "border-gray-100", "bg-emerald-700");
         newRow.id = element["id"];
-        let keys = ["golf", "email", "password", "date", "start_time", "ideal_time", "end_time", "player2", "player3", "player4"];
+        // let keys = ["golf", "email", "password", "date", "start_time", "ideal_time", "end_time", "player2", "player3", "player4"];
+        let keys = ["golf", "date", "player2", "player3", "player4"];
         keys.forEach(key => {
             let newCell = newRow.insertCell(-1);
             newCell.classList.add("py-4", "px-6");

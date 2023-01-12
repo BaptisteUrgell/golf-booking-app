@@ -22,8 +22,14 @@
         <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Golf Booking App</span>
     </a>
     <div class="flex md:order-2">
-        <button type="button" id="logout-button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Déconnexion</button>
-        <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
+        <a href="{{ url_for('static', path='file/bnp-rib.pdf') }}" target="_blank">
+            <button type="button" id="donate-button" class="inline-flex relative items-center mx-2 text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">
+                <svg aria-hidden="true" class="mr-2 w-4 h-4 fill-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z" clip-rule="evenodd"></path></svg>
+                Faire un don
+            </button>
+        </a>
+        <button type="button" id="logout-button" class="mx-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Déconnexion</button>
+        <button data-collapse-toggle="navbar-sticky" type="button" class="mx-2 inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
       </button>
@@ -205,33 +211,33 @@
 
     <!-- Book calendar -->
     <section id="mybooks" class="scroll-smooth">
-        <div class="w-full py-20 px-10">
-            <h1 class="text-emerald-900 text-center text-4xl mb-6">Mes réservations</h1>
+        <div class="w-full py-20 px-10 bg-emerald-900">
+            <h1 class="text-white text-center text-4xl mb-6">Mes réservations</h1>
             <div id="credit-div">
-                <h1 id="credit-number"></h1>
+                <h1 id="credit-number" class="text-white"></h1>
                 <div class="flex items-center">
                     <svg id="credit-enought" hidden class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
                     <svg id="credit-not-enought" hidden class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
-                    <p id="credit-required" class="text-sm text-gray-600"></p>
+                    <p id="credit-required" class="text-sm text-gray-400"></p>
                 </div>
             </div>
             <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-                <table id="book-table" class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-white uppercase bg-emerald-900 dark:bg-gray-700 dark:text-gray-400">
+                <table id="book-table" class="w-full text-sm text-center border-white">
+                    <thead class="text-xs text-white uppercase bg-emerald-800 border-b border-gray-100">
                         <tr>
                             <th scope="col" class="py-3 px-6">
                                 Parcours
                             </th>
-                            <th scope="col" class="py-3 px-6">
+                            <!-- <th scope="col" class="py-3 px-6">
                                 Email
                             </th>
                             <th scope="col" class="py-3 px-6">
                                 MDP
-                            </th>
+                            </th> -->
                             <th scope="col" class="py-3 px-6">
                                 Date
                             </th>
-                            <th scope="col" class="py-3 px-6">
+                            <!-- <th scope="col" class="py-3 px-6">
                                 Min
                             </th>
                             <th scope="col" class="py-3 px-6">
@@ -239,7 +245,7 @@
                             </th>
                             <th scope="col" class="py-3 px-6">
                                 Max
-                            </th>
+                            </th> -->
                             <th scope="col" class="py-3 px-6">
                                 Joueur 2
                             </th>
