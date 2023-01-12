@@ -1,4 +1,5 @@
 import datetime as dt
+import os
 
 from passlib.hash import bcrypt
 
@@ -10,6 +11,8 @@ from app.core.config import get_api_settings
 settings = get_api_settings()
 
 FERNET = settings.fernet
+DATABASE_SCHEMA = settings.database_schema
+DATABASE = settings.database
 
 class AccountExist(Exception):
     pass
@@ -19,6 +22,12 @@ class AccountNotExist(Exception):
 
 class WrongPassword(Exception):
     pass
+
+def initialise_database():
+    if not os.path.exists(DATABASE):
+        with SQLite(DATABASE) as db:
+            with open(DATABASE_SCHEMA, mode='r') as f:
+                db.executescript(f.read())
 
 async def get_account(email: str) -> User:
     async with SQLite() as cursor:

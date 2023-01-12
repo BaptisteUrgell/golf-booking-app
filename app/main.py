@@ -26,7 +26,7 @@ from .core.config import get_api_settings
 from .routes.receptionist import Receptionist
 from .routes.credit import Credit
 from .routes.login import OAuth2
-from .classes.sqlite import SQLite
+from .scripts.sql_tools import initialise_database
 
 
 settings = get_api_settings()
@@ -36,18 +36,10 @@ URL_DOC = settings.redoc_url
 URL_SWAGGER = settings.docs_url
 STATICS_DIR = settings.static_dir
 TEMPLATES_DIR = settings.templates_dir
-DATABASE = settings.database
-DATABASE_SHEMA = settings.database_shema
 
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
-
-def init_db():
-    if not os.path.exists(DATABASE):
-        print("not ok")
-        with SQLite(DATABASE) as db:
-            with open(DATABASE_SHEMA, mode='r') as f:
-                db.executescript(f.read())
+initialise_database()
 
 app = FastAPI(
     title = TITLE,

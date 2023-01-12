@@ -42,7 +42,7 @@ class APISettings(BaseSettings):
     ########################     Database     ########################
 
     database = os.path.join(ROOT_DIR, 'database', 'golf-booking-app.db')
-    database_shema = os.path.join(ROOT_DIR, 'database', 'database.db')
+    database_schema = os.path.join(ROOT_DIR, 'database', 'database.sql')
 
     ########################     Other params     ########################
 
